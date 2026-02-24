@@ -71,15 +71,13 @@ jobs:
           --hidden-import uvicorn.lifespan.on
 
       - name: Rename artifact
-        run: |
-          $version = "${{ github.ref_name }}"
-          Move-Item dist/WeatherTrader.exe "dist/WeatherTrader-${version}-windows.exe"
+        run: Move-Item dist/WeatherTrader.exe "dist/WeatherTrader-windows.exe"
         shell: pwsh
 
       - uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: dist/WeatherTrader-*-windows.exe
+          path: dist/WeatherTrader-windows.exe
 
   build-macos:
     runs-on: macos-latest
@@ -147,16 +145,15 @@ jobs:
 
       - name: Create DMG
         run: |
-          VERSION="${{ github.ref_name }}"
           hdiutil create -volname "WeatherTrader" \
             -srcfolder dist/WeatherTrader.app \
             -ov -format UDZO \
-            "dist/WeatherTrader-${VERSION}-macos.dmg"
+            "dist/WeatherTrader-macos.dmg"
 
       - uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: dist/WeatherTrader-*-macos.dmg
+          path: dist/WeatherTrader-macos.dmg
 
   build-linux:
     runs-on: ubuntu-22.04
@@ -229,14 +226,12 @@ jobs:
           --hidden-import uvicorn.lifespan.on
 
       - name: Rename artifact
-        run: |
-          VERSION="${{ github.ref_name }}"
-          mv dist/WeatherTrader "dist/weather-trader-${VERSION}-linux"
+        run: mv dist/WeatherTrader "dist/weather-trader-linux"
 
       - uses: actions/upload-artifact@v4
         with:
           name: linux-build
-          path: dist/weather-trader-*-linux
+          path: dist/weather-trader-linux
 
   release:
     needs: [build-windows, build-macos, build-linux]
@@ -254,6 +249,6 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            artifacts/WeatherTrader-*-windows.exe
-            artifacts/WeatherTrader-*-macos.dmg
-            artifacts/weather-trader-*-linux
+            artifacts/WeatherTrader-windows.exe
+            artifacts/WeatherTrader-macos.dmg
+            artifacts/weather-trader-linux
