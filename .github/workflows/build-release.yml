@@ -1,0 +1,139 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          uv sync
+          uv pip install pyinstaller
+
+      - name: Build executable
+        run: uv run flet pack app_new.py --icon icon-256.png --name WeatherTrader
+
+      - name: Rename artifact
+        run: |
+          $version = "${{ github.ref_name }}"
+          Move-Item dist/WeatherTrader.exe "dist/WeatherTrader-${version}-windows.exe"
+        shell: pwsh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: dist/WeatherTrader-*-windows.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          uv sync
+          uv pip install pyinstaller
+
+      - name: Build app bundle
+        run: |
+          uv run flet pack app_new.py \
+            --icon icon-256.png \
+            --name WeatherTrader \
+            --bundle-id com.github.mengo1234.weathertrader
+
+      - name: Create DMG
+        run: |
+          VERSION="${{ github.ref_name }}"
+          hdiutil create -volname "WeatherTrader" \
+            -srcfolder dist/WeatherTrader.app \
+            -ov -format UDZO \
+            "dist/WeatherTrader-${VERSION}-macos.dmg"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: dist/WeatherTrader-*-macos.dmg
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk-3-dev \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          uv sync
+          uv pip install pyinstaller
+
+      - name: Build executable
+        run: uv run flet pack app_new.py --icon icon-256.png --name WeatherTrader
+
+      - name: Rename artifact
+        run: |
+          VERSION="${{ github.ref_name }}"
+          mv dist/WeatherTrader "dist/weather-trader-${VERSION}-linux"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: dist/weather-trader-*-linux
+
+  release:
+    needs: [build-windows, build-macos, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -lR artifacts/
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/WeatherTrader-*-windows.exe
+            artifacts/WeatherTrader-*-macos.dmg
+            artifacts/weather-trader-*-linux

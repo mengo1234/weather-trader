@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+
+# Old monolithic file
+app.py
+
+# Runtime data
+pnl_data.json
+*.log
+
+# Build artifacts
+*.spec
+*.exe
+*.dmg
+*.AppImage
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
