@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Header -->
+  <text x="24" y="36" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#eef3ff">Previsioni</text>
+  <rect x="480" y="16" width="136" height="28" rx="14" fill="#162033" stroke="#2a3756" stroke-width="1"/>
+  <text x="510" y="35" font-family="system-ui,sans-serif" font-size="11" fill="#25d0ff">Roma</text>
+  <text x="556" y="35" font-family="system-ui,sans-serif" font-size="11" fill="#9ba8c7">&#9660;</text>
+  <!-- Model cards -->
+  <rect x="24" y="56" width="188" height="100" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <rect x="32" y="64" width="8" height="8" rx="2" fill="#25d0ff"/>
+  <text x="46" y="72" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#eef3ff">GFS</text>
+  <text x="32" y="94" font-family="system-ui,sans-serif" font-size="28" font-weight="700" fill="#eef3ff">18°C</text>
+  <text x="32" y="114" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Pioggia 25%</text>
+  <text x="32" y="130" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Vento 12 km/h</text>
+  <text x="140" y="94" font-family="system-ui,sans-serif" font-size="10" fill="#2ee6a6">94% acc</text>
+  <rect x="226" y="56" width="188" height="100" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <rect x="234" y="64" width="8" height="8" rx="2" fill="#7c8cff"/>
+  <text x="248" y="72" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#eef3ff">ECMWF</text>
+  <text x="234" y="94" font-family="system-ui,sans-serif" font-size="28" font-weight="700" fill="#eef3ff">17°C</text>
+  <text x="234" y="114" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Pioggia 30%</text>
+  <text x="234" y="130" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Vento 14 km/h</text>
+  <text x="342" y="94" font-family="system-ui,sans-serif" font-size="10" fill="#2ee6a6">91% acc</text>
+  <rect x="428" y="56" width="188" height="100" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <rect x="436" y="64" width="8" height="8" rx="2" fill="#ffd166"/>
+  <text x="450" y="72" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#eef3ff">ICON</text>
+  <text x="436" y="94" font-family="system-ui,sans-serif" font-size="28" font-weight="700" fill="#eef3ff">18°C</text>
+  <text x="436" y="114" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Pioggia 22%</text>
+  <text x="436" y="130" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Vento 10 km/h</text>
+  <text x="544" y="94" font-family="system-ui,sans-serif" font-size="10" fill="#ffd166">87% acc</text>
+  <!-- Ensemble result -->
+  <rect x="24" y="172" width="592" height="56" rx="10" fill="#162033" stroke="#25d0ff" stroke-width="1.5"/>
+  <text x="44" y="196" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#25d0ff">ENSEMBLE</text>
+  <text x="140" y="196" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#eef3ff">17.7°C</text>
+  <text x="260" y="196" font-family="system-ui,sans-serif" font-size="11" fill="#9ba8c7">Pioggia 26%</text>
+  <text x="380" y="196" font-family="system-ui,sans-serif" font-size="11" fill="#9ba8c7">Confidence ±1.2°C</text>
+  <text x="540" y="196" font-family="system-ui,sans-serif" font-size="11" fill="#2ee6a6">HIGH</text>
+  <text x="260" y="216" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Media pesata dei 3 modelli con accuracy tracking</text>
+  <!-- Temperature chart -->
+  <rect x="24" y="244" width="592" height="144" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="44" y="270" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#eef3ff">Forecast 7 days</text>
+  <!-- GFS line -->
+  <polyline points="60,340 130,330 200,320 270,325 340,310 410,300 480,305 550,295" fill="none" stroke="#25d0ff" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <!-- ECMWF line -->
+  <polyline points="60,345 130,335 200,318 270,328 340,315 410,305 480,300 550,290" fill="none" stroke="#7c8cff" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <!-- ICON line -->
+  <polyline points="60,338 130,328 200,322 270,322 340,308 410,298 480,308 550,298" fill="none" stroke="#ffd166" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <!-- Ensemble bold -->
+  <polyline points="60,341 130,331 200,320 270,325 340,311 410,301 480,304 550,294" fill="none" stroke="#eef3ff" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- X axis labels -->
+  <text x="55" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Lun</text>
+  <text x="125" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Mar</text>
+  <text x="195" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Mer</text>
+  <text x="265" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Gio</text>
+  <text x="335" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Ven</text>
+  <text x="405" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Sab</text>
+  <text x="475" y="372" font-family="system-ui,sans-serif" font-size="9" fill="#9ba8c7">Dom</text>
+</svg>

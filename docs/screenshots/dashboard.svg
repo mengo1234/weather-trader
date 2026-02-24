@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#080b14"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="chart" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#25d0ff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#25d0ff" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bg)" rx="12"/>
+  <!-- Header -->
+  <text x="24" y="36" font-family="system-ui,sans-serif" font-size="16" font-weight="700" fill="#eef3ff">Dashboard</text>
+  <circle cx="608" cy="28" r="6" fill="#2ee6a6"/>
+  <!-- KPI Cards -->
+  <rect x="24" y="56" width="140" height="72" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="44" y="80" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Portfolio Value</text>
+  <text x="44" y="106" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#2ee6a6">$1,247</text>
+  <rect x="180" y="56" width="140" height="72" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="200" y="80" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Win Rate</text>
+  <text x="200" y="106" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#25d0ff">68.3%</text>
+  <rect x="336" y="56" width="140" height="72" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="356" y="80" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Active Bets</text>
+  <text x="356" y="106" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#ffd166">12</text>
+  <rect x="492" y="56" width="124" height="72" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="512" y="80" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Today P&amp;L</text>
+  <text x="512" y="106" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#2ee6a6">+$34</text>
+  <!-- Equity Chart -->
+  <rect x="24" y="144" width="592" height="200" rx="10" fill="#111827" stroke="#2a3756" stroke-width="1"/>
+  <text x="44" y="170" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#eef3ff">Equity Curve</text>
+  <polyline points="50,310 100,295 150,300 200,280 250,270 300,260 350,240 400,245 450,220 500,210 550,195 590,180" fill="none" stroke="#25d0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="50,310 100,295 150,300 200,280 250,270 300,260 350,240 400,245 450,220 500,210 550,195 590,180 590,330 50,330" fill="url(#chart)"/>
+  <line x1="50" y1="330" x2="590" y2="330" stroke="#2a3756" stroke-width="1"/>
+  <!-- Status bar -->
+  <rect x="24" y="360" width="592" height="28" rx="6" fill="#162033"/>
+  <circle cx="44" cy="374" r="4" fill="#2ee6a6"/>
+  <text x="56" y="378" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">Backend connected</text>
+  <text x="520" y="378" font-family="system-ui,sans-serif" font-size="10" fill="#9ba8c7">24 cities</text>
+</svg>

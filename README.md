@@ -17,11 +17,29 @@
 
 <div align="center">
 
-### Download
+### Get the App
 
-[![Windows](https://img.shields.io/badge/Windows-Download-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-windows.exe)
-[![macOS](https://img.shields.io/badge/macOS-Download-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-macos.dmg)
-[![Linux](https://img.shields.io/badge/Linux-Download-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/mengo1234/weather-trader/releases/latest/download/weather-trader-linux)
+> **One-click install** — no Python required. Download the standalone binary for your OS, run it, done.
+
+<br>
+
+<a href="https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-windows.exe">
+  <img src="https://img.shields.io/badge/%EF%A3%BF_Windows-Download_.exe-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows" height="42">
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-macos.dmg">
+  <img src="https://img.shields.io/badge/%EF%A3%BF_macOS-Download_.dmg-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Download for macOS" height="42">
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/mengo1234/weather-trader/releases/latest/download/weather-trader-linux">
+  <img src="https://img.shields.io/badge/%EF%A3%BF_Linux-Download_binary-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Download for Linux" height="42">
+</a>
+
+<br><br>
+
+<sub>Windows 10+ &nbsp;|&nbsp; macOS 12+ (Intel & Apple Silicon) &nbsp;|&nbsp; Ubuntu 22.04+ / Fedora 38+</sub>
+<br>
+<sub>All builds are generated automatically via GitHub Actions from this source code.</sub>
 
 </div>
 
@@ -55,23 +73,34 @@
 
 <div align="center">
 
-| Dashboard | Previsioni | Mercati |
-|:---------:|:----------:|:-------:|
-| ![Dashboard](docs/screenshots/dashboard.png) | ![Previsioni](docs/screenshots/previsioni.png) | ![Mercati](docs/screenshots/mercati.png) |
-
-| Mappa | Storico | Sistema |
-|:-----:|:-------:|:-------:|
-| ![Mappa](docs/screenshots/mappa.png) | ![Storico](docs/screenshots/storico.png) | ![Sistema](docs/screenshots/sistema.png) |
+<table>
+<tr>
+<td align="center"><strong>Dashboard</strong><br><sub>KPI cards, equity curve, live signals</sub></td>
+<td align="center"><strong>Previsioni</strong><br><sub>GFS / ECMWF / ICON ensemble</sub></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/dashboard.svg" width="400" alt="Dashboard"></td>
+<td><img src="docs/screenshots/previsioni.svg" width="400" alt="Previsioni"></td>
+</tr>
+<tr>
+<td align="center"><strong>Mercati</strong><br><sub>Polymarket odds, edge detection, Kelly sizing</sub></td>
+<td align="center"><strong>Mappa</strong><br><sub>Interactive map with temperature overlay</sub></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/mercati.svg" width="400" alt="Mercati"></td>
+<td><img src="docs/screenshots/mappa.svg" width="400" alt="Mappa"></td>
+</tr>
+<tr>
+<td align="center"><strong>Storico</strong><br><sub>P&L curves, drawdown, trade journal</sub></td>
+<td align="center"><strong>Sistema</strong><br><sub>Backend health, API latency, logs</sub></td>
+</tr>
+<tr>
+<td><img src="docs/screenshots/storico.svg" width="400" alt="Storico"></td>
+<td><img src="docs/screenshots/sistema.svg" width="400" alt="Sistema"></td>
+</tr>
+</table>
 
 </div>
-
-## Download
-
-| Platform | Download | Notes |
-|----------|----------|-------|
-| **Windows** | [WeatherTrader-windows.exe](https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-windows.exe) | Windows 10+ |
-| **macOS** | [WeatherTrader-macos.dmg](https://github.com/mengo1234/weather-trader/releases/latest/download/WeatherTrader-macos.dmg) | macOS 12+ (Intel & Apple Silicon) |
-| **Linux** | [weather-trader-linux](https://github.com/mengo1234/weather-trader/releases/latest/download/weather-trader-linux) | Ubuntu 22.04+, Fedora 38+ |
 
 ## Quick Start
 
