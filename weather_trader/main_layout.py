@@ -12,7 +12,7 @@ from weather_trader.api_client import api_get, api_post
 from weather_trader.app_state import AppState
 from weather_trader.constants import (
     ACCENT, ACCENT2, BG, CARD, CARD_HOVER, CITY_NAMES, CITY_SLUGS, GREEN, ORANGE, RED, TEXT, TEXT_DIM, YELLOW,
-    FONT_UI, TYPE_XS, TYPE_SM, TYPE_MD, TYPE_LG, TYPE_XL, TYPE_2XL, SURFACE_1,
+    FONT_UI, TYPE_2XS, TYPE_XS, TYPE_SM, TYPE_MD, TYPE_LG, TYPE_XL, TYPE_2XL, SURFACE_1,
 )
 from weather_trader.logging_config import setup_logging
 from weather_trader.widgets.factory import pad
@@ -378,7 +378,7 @@ def main(page: ft.Page):
     # ========================================================
     # AI ASSISTANT FAB + CHAT OVERLAY (always available)
     # ========================================================
-    ai_ui = {"open": False, "busy": False}
+    ai_ui = {"open": False, "busy": False, "ready": False}
     ai_history: list[dict[str, str]] = []
 
     ai_panel_title = ft.Text("Assistente AI", size=TYPE_LG, color=TEXT, weight=ft.FontWeight.W_700)
@@ -393,7 +393,7 @@ def main(page: ft.Page):
         scroll=ft.ScrollMode.AUTO,
         height=330,
     )
-    ai_install_logs = ft.Column(spacing=4, scroll=ft.ScrollMode.AUTO, height=96)
+    ai_install_logs = ft.Column(spacing=4, scroll=ft.ScrollMode.AUTO, height=180)
     ai_install_status_text = ft.Text("Installazione: non avviata", size=TYPE_XS, color=TEXT_DIM)
     ai_install_confirm_text = ft.Text(
         "Confermi installazione automatica di Ollama + modello selezionato?",
@@ -498,6 +498,10 @@ def main(page: ft.Page):
             pass
 
     def _ai_send_message(message_text: str | None = None):
+        if not ai_ui.get("ready"):
+            ai_status_text.value = "AI locale non pronta: completa installazione/configurazione prima della chat."
+            safe_update()
+            return
         text = (message_text if message_text is not None else ai_input.value or "").strip()
         if not text:
             return
@@ -550,11 +554,14 @@ def main(page: ft.Page):
     def _ai_refresh_backend_status():
         st = api_get("/ai/status", timeout=4)
         inst = api_get("/ai/install/status", timeout=4)
+        ready = False
         if st:
             provider = str(st.get("provider") or "ollama")
             reachable = bool(st.get("reachable"))
             configured = bool(st.get("configured"))
+            model_installed = st.get("model_installed")
             model = st.get("model") or "—"
+            ready = bool(reachable and configured and (model_installed is not False))
             if reachable:
                 ai_backend_text.value = f"{provider}: online · modello config: {model}"
             else:
@@ -568,6 +575,7 @@ def main(page: ft.Page):
                     pass
         else:
             ai_backend_text.value = "AI backend: endpoint /ai/status non raggiungibile"
+            ready = False
 
         ai_install_logs.controls.clear()
         if inst:
@@ -582,6 +590,8 @@ def main(page: ft.Page):
         else:
             ai_install_status_text.value = "Installazione: stato non disponibile"
             ai_install_logs.controls.append(ft.Text("Impossibile leggere /ai/install/status", size=TYPE_2XS, color=TEXT_DIM))
+        ai_ui["ready"] = ready
+        _ai_apply_mode()
         safe_update()
 
     def _ai_on_submit(e):
@@ -611,6 +621,7 @@ def main(page: ft.Page):
 
     def _ai_confirm_install(e=None):
         model = _ai_get_selected_model()
+        ai_ui["ready"] = False
         ai_install_confirm_box.visible = False
         ai_install_status_text.value = f"Installazione: avvio in corso ({model})..."
         ai_install_logs.controls.clear()
@@ -711,11 +722,108 @@ def main(page: ft.Page):
         run_spacing=0,
     )
 
+    ai_setup_view = ft.Container(
+        visible=True,
+        expand=True,
+        content=ft.Column([
+            ft.Container(
+                content=ft.Column([
+                    ft.Text("AI locale non pronta", size=TYPE_MD, color=TEXT, weight=ft.FontWeight.W_700),
+                    ft.Text(
+                        "Installa Ollama e un modello locale per abilitare la chat dentro l'app.",
+                        size=TYPE_XS,
+                        color=TEXT_DIM,
+                    ),
+                ], spacing=2),
+                padding=pad(h=10, v=10),
+                border_radius=12,
+                bgcolor=ft.Colors.with_opacity(0.22, CARD),
+                border=ft.Border.all(1, ft.Colors.with_opacity(0.08, TEXT)),
+            ),
+            ft.Row([
+                ft.Icon(ft.Icons.COMPUTER, size=12, color=TEXT_DIM),
+                ai_backend_text,
+            ], spacing=6),
+            ft.Row([
+                ft.Icon(ft.Icons.TUNE, size=12, color=TEXT_DIM),
+                ai_model_label,
+            ], spacing=6),
+            ft.Row([ai_selected_model], spacing=6),
+            ai_model_hint_text,
+            ft.Row([ai_install_button, ai_install_refresh_button], spacing=8, wrap=True),
+            ai_install_confirm_box,
+            ft.Container(
+                content=ft.Column([
+                    ai_install_status_text,
+                    ft.Container(
+                        content=ai_install_logs,
+                        padding=pad(h=6, v=6),
+                        border_radius=10,
+                        bgcolor=ft.Colors.with_opacity(0.18, BG),
+                        border=ft.Border.all(1, ft.Colors.with_opacity(0.08, TEXT)),
+                    ),
+                ], spacing=4),
+                padding=pad(h=2, v=2),
+            ),
+            ft.Container(
+                content=ft.Text(
+                    "Quando Ollama è online e il modello è installato, la chat comparirà qui automaticamente.",
+                    size=TYPE_2XS,
+                    color=TEXT_DIM,
+                ),
+                padding=pad(h=4, v=2),
+            ),
+        ], spacing=6),
+    )
+
+    ai_chat_view = ft.Container(
+        visible=False,
+        expand=True,
+        content=ft.Column([
+            ft.Container(
+                content=ai_messages,
+                expand=True,
+                padding=pad(h=6, v=6),
+                border_radius=14,
+                bgcolor=ft.Colors.with_opacity(0.30, CARD),
+                border=ft.Border.all(1, ft.Colors.with_opacity(0.08, TEXT)),
+            ),
+            ft.Container(
+                content=ft.Column([
+                    ai_quick_prompt,
+                    ai_quick_actions,
+                ], spacing=0),
+                padding=pad(h=6, v=2),
+            ),
+            ft.Row([
+                ai_input,
+                ai_send_button,
+            ], spacing=8),
+            ft.Row([
+                ft.Icon(ft.Icons.INFO_OUTLINE, size=12, color=TEXT_DIM),
+                ai_status_text,
+            ], spacing=6),
+            ft.Row([
+                ft.TextButton("Controlla/installa AI locale", on_click=_ai_refresh_install),
+            ], spacing=0),
+        ], spacing=6, expand=True),
+    )
+
+    def _ai_apply_mode():
+        ready = bool(ai_ui.get("ready"))
+        ai_setup_view.visible = not ready
+        ai_chat_view.visible = ready
+        ai_panel_subtitle.value = (
+            "Forecast + mercati + sistema (contesto reale)"
+            if ready
+            else "Configura Ollama locale per attivare la chat"
+        )
+
     ai_panel = ft.Container(
         right=18,
         bottom=104,
         width=440,
-        height=600,
+        height=620,
         visible=False,
         border_radius=18,
         bgcolor=ft.Colors.with_opacity(0.96, SURFACE_1),
@@ -755,60 +863,10 @@ def main(page: ft.Page):
                 pill(ai_context_text, bgcolor=ft.Colors.with_opacity(0.35, CARD), padding_h=10, padding_v=6),
             ], wrap=True),
             ft.Container(height=4),
-            ft.Container(
-                content=ai_messages,
-                padding=pad(h=6, v=6),
-                border_radius=14,
-                bgcolor=ft.Colors.with_opacity(0.30, CARD),
-                border=ft.Border.all(1, ft.Colors.with_opacity(0.08, TEXT)),
-            ),
-            ft.Container(
-                content=ft.Column([
-                    ai_quick_prompt,
-                    ai_quick_actions,
-                ], spacing=0),
-                padding=pad(h=6, v=2),
-            ),
-            ft.Row([
-                ai_input,
-                ai_send_button,
-            ], spacing=8),
-            ft.Row([
-                ft.Icon(ft.Icons.INFO_OUTLINE, size=12, color=TEXT_DIM),
-                ai_status_text,
-            ], spacing=6),
-            ft.Row([
-                ft.Icon(ft.Icons.COMPUTER, size=12, color=TEXT_DIM),
-                ai_backend_text,
-            ], spacing=6),
-            ft.Row([
-                ft.Icon(ft.Icons.TUNE, size=12, color=TEXT_DIM),
-                ai_model_label,
-            ], spacing=6),
-            ft.Row([
-                ai_selected_model,
-            ], spacing=6),
-            ai_model_hint_text,
-            ft.Row([
-                ai_install_button,
-                ai_install_refresh_button,
-            ], spacing=8, wrap=True),
-            ai_install_confirm_box,
-            ft.Container(
-                content=ft.Column([
-                    ai_install_status_text,
-                    ft.Container(
-                        content=ai_install_logs,
-                        padding=pad(h=6, v=6),
-                        border_radius=10,
-                        bgcolor=ft.Colors.with_opacity(0.18, BG),
-                        border=ft.Border.all(1, ft.Colors.with_opacity(0.08, TEXT)),
-                    ),
-                ], spacing=4),
-                padding=pad(h=2, v=2),
-            ),
-            ft.Container(height=8),
-        ], spacing=6),
+            ai_setup_view,
+            ai_chat_view,
+            ft.Container(height=4),
+        ], spacing=6, expand=True),
     )
 
     ai_fab = ft.Container(

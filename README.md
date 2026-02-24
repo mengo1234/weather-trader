@@ -113,22 +113,13 @@ uv sync
 uv run python app_new.py
 ```
 
-## Backend Setup
+## Backend
 
-Weather Trader requires the **weather-engine** backend running on `localhost:8321`.
+The **weather-engine** backend is **bundled inside the app** — it starts automatically when you launch Weather Trader. No separate setup needed.
 
-The backend provides forecast data, market odds, and trade execution. Start it before launching the desktop app:
+The embedded server runs on `localhost:8321` and provides forecast data, market odds, and trade execution. On first launch it collects weather data for all 24 cities.
 
-```bash
-cd ../weather-engine
-uv run uvicorn weather_engine.main:app --host 0.0.0.0 --port 8321
-```
-
-Or use the included launcher script that starts both:
-
-```bash
-./launch.sh
-```
+> **Advanced:** if you already run weather-engine externally, the app detects it and skips the embedded server. You can also set `WEATHER_API_BASE` to point to a custom instance.
 
 ## Architecture
 
@@ -136,34 +127,41 @@ Or use the included launcher script that starts both:
 weather-trader/
 ├── app_new.py                  # Entry point
 ├── pyproject.toml              # Project config & dependencies
-├── launch.sh                   # Backend + app launcher
 ├── icon-*.png                  # App icons (48/128/256/512)
-├── icon.svg                    # Vector source icon
-└── weather_trader/             # Main package
-    ├── __init__.py
-    ├── main_layout.py          # Layout, navigation, status bar
-    ├── api_client.py           # HTTP client (httpx → backend)
-    ├── app_state.py            # Global application state
-    ├── constants.py            # Colors, cities, config
-    ├── logging_config.py       # Logging setup
-    ├── logic/
-    │   ├── pnl_tracker.py      # P&L tracking & persistence
-    │   └── risk_manager.py     # Kelly criterion & bankroll mgmt
-    ├── sections/
-    │   ├── dashboard.py        # Dashboard KPIs & charts
-    │   ├── previsioni.py       # Ensemble forecast view
-    │   ├── mercati.py          # Market odds & bet signals
-    │   ├── mappa.py            # Interactive weather map
-    │   ├── storico.py          # Trade history & analytics
-    │   ├── sistema.py          # System health monitoring
-    │   └── guida.py            # Built-in user guide
-    └── widgets/
-        ├── charts.py           # Chart components
-        ├── confidence.py       # Confidence interval display
-        ├── distribution.py     # Distribution visualization
-        ├── factory.py          # Widget factory & helpers
-        ├── pnl_widgets.py      # P&L display widgets
-        └── weather_map.py      # Map tile layer & markers
+├── weather_trader/             # Desktop UI package
+│   ├── main_layout.py          # Layout, navigation, status bar
+│   ├── backend_bootstrap.py    # Auto-start embedded backend
+│   ├── api_client.py           # HTTP client (httpx → backend)
+│   ├── app_state.py            # Global application state
+│   ├── constants.py            # Colors, cities, config
+│   ├── logic/
+│   │   ├── pnl_tracker.py      # P&L tracking & persistence
+│   │   └── risk_manager.py     # Kelly criterion & bankroll mgmt
+│   ├── sections/
+│   │   ├── dashboard.py        # Dashboard KPIs & charts
+│   │   ├── previsioni.py       # Ensemble forecast view
+│   │   ├── mercati.py          # Market odds & bet signals
+│   │   ├── mappa.py            # Interactive weather map
+│   │   ├── storico.py          # Trade history & analytics
+│   │   ├── sistema.py          # System health monitoring
+│   │   └── guida.py            # Built-in user guide
+│   └── widgets/
+│       ├── charts.py           # Chart components
+│       ├── confidence.py       # Confidence interval display
+│       ├── distribution.py     # Distribution visualization
+│       ├── factory.py          # Widget factory & helpers
+│       ├── pnl_widgets.py      # P&L display widgets
+│       └── weather_map.py      # Map tile layer & markers
+└── weather_engine/             # Embedded backend (FastAPI)
+    ├── main.py                 # FastAPI app + lifespan
+    ├── config.py               # Settings (pydantic-settings)
+    ├── db.py                   # DuckDB storage layer
+    ├── scheduler.py            # APScheduler data collection
+    ├── api/                    # REST endpoints
+    ├── analysis/               # Forecast analytics & scoring
+    ├── collectors/             # Open-Meteo data collectors
+    ├── market_bridge/          # Polymarket integration
+    └── models/                 # Pydantic data models
 ```
 
 ## Tech Stack
