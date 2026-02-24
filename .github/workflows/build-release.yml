@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync
-          uv pip install pyinstaller
+          uv pip install pyinstaller pillow
 
       - name: Build executable
         run: uv run flet pack app_new.py --icon icon-256.png --name WeatherTrader
@@ -57,7 +57,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync
-          uv pip install pyinstaller
+          uv pip install pyinstaller pillow
 
       - name: Build app bundle
         run: |
@@ -104,7 +104,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync
-          uv pip install pyinstaller
+          uv pip install pyinstaller pillow
 
       - name: Build executable
         run: uv run flet pack app_new.py --icon icon-256.png --name WeatherTrader
