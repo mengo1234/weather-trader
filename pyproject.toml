@@ -16,20 +16,16 @@ classifiers = [
     "Topic :: Office/Business :: Financial",
     "Topic :: Scientific/Engineering :: Atmospheric Science",
 ]
-
-[project.urls]
-Homepage = "https://github.com/mengo1234/weather-trader"
-Repository = "https://github.com/mengo1234/weather-trader"
-Issues = "https://github.com/mengo1234/weather-trader/issues"
-
-[project.scripts]
-weather-trader = "weather_trader.main_layout:main"
-
 dependencies = [
     "flet>=0.25",
     "flet-map>=0.80.5",
     "httpx>=0.28",
 ]
+
+[project.urls]
+Homepage = "https://github.com/mengo1234/weather-trader"
+Repository = "https://github.com/mengo1234/weather-trader"
+Issues = "https://github.com/mengo1234/weather-trader/issues"
 
 [build-system]
 requires = ["hatchling"]
